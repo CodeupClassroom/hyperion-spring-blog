@@ -41,7 +41,7 @@ public class UserController {
     public String saveUser(@ModelAttribute User user) {
         String hash = passwordEncoder.encode(user.getPassword()); // ~plaintext password
         user.setPassword(hash); // immediately no longer have access to the plaintext password. It's hashed
-        userDao.save(user);
+        userDao.save(user);  // you must actually save the user in order to ... USE that user later
         return "redirect:/login";
         // we can also redirect directly to the profile page, which we will do later
     }
