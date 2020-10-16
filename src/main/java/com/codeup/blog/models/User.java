@@ -1,5 +1,9 @@
 package com.codeup.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,6 +21,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     // If we wanted to check for account expiration (like it's been more than 365 days since they registered, we need to store a 'registrationDate' property, to do the date difference check on
@@ -26,6 +31,7 @@ public class User {
     // We would also add this property to the constructor, copy constructor, and add getters and setters for it, if we wanted to store the registration
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonBackReference
     private List<Post> posts;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
