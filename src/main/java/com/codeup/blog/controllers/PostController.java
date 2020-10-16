@@ -91,4 +91,10 @@ public class PostController {
         model.addAttribute("post", post);
         return "posts/create";
     }
+
+    @PostMapping("/posts/edit")
+    public String updateAd(@ModelAttribute Post post) {
+        postRepo.save(post);
+        return "redirect:/posts/" + post.getId();
+    }
 }
