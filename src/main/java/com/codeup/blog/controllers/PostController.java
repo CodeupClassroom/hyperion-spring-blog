@@ -5,6 +5,7 @@ import com.codeup.blog.models.User;
 import com.codeup.blog.repositories.PostRepository;
 import com.codeup.blog.repositories.UserRepository;
 import com.codeup.blog.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +56,15 @@ public class PostController {
 
         // Send the create email
         if (post.getId() == 0) {
-            post.setUser(userRepo.findAll().get(0)); // kluge to set a current user
+
+            // Get the currently logged in user and save their ID as the author of this post
+            User thisAuthor = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            post.setUser(thisAuthor);
+
+
+            // post.setUser(userRepo.findAll().get(0)); // kluge to set a current user
+
+
             emailService.prepareAndSend(post.getUser().getEmail(),
                     "Created Post: " + post.getTitle(),
                     post.getTitle() + "\n\n" + post.getBody());
